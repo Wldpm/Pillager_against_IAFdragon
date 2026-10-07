@@ -1,0 +1,20 @@
+modLoader = "javafml"
+loaderVersion = "[1,)"
+license = "MIT"
+
+[[mods]]
+modId = "iaf_illager_hostility"
+version = "1.0.0"
+displayName = "IAF Illager Dragon Hostility"
+description = '''让灾厄村民（刌民：掠夺者 / 卫道士 / 唤魔者 / 幻术师）主动把冰与火的龙族当作攻击目标。
+
+1.0.0 说明：本版本的「龙 → 灾厄村民」需要在冰与火 jar 的
+data/iceandfire/tags/entity_type/dragon_targets.json 里手动追加 "#minecraft:illager"。
+1.0.1 起改由本模组自带的数据包 tag 承担，冰与火 jar 保持官方原样。'''
+
+[[dependencies.iaf_illager_hostility]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.1,)"
+ordering = "NONE"
+side = "BOTH"

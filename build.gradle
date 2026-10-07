@@ -1,0 +1,40 @@
+plugins {
+    id 'java-library'
+    // 官方推荐插件，用法见 https://docs.neoforged.net/toolchain/docs/plugins/mdg/
+    // 最新版本号可在 https://projects.neoforged.net/neoforged/ModDevGradle 查询
+    id 'net.neoforged.moddev' version '2.0.131'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+neoForge {
+    // 与 src/main/resources/META-INF/neoforge.mods.toml 里的依赖声明保持一致
+    version = "21.1.252"
+
+    runs {
+        client {
+            client()
+        }
+        server {
+            server()
+        }
+    }
+
+    mods {
+        iaf_illager_hostility {
+            sourceSet sourceSets.main
+        }
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+jar {
+    archiveBaseName = 'pillager_against_IAFdragon'
+}

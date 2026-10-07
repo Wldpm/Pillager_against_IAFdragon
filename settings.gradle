@@ -1,0 +1,13 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+    }
+}
+
+plugins {
+    // 允许 Gradle 自动下载所需版本的 JDK（NeoForge 官方 MDK 同款配置）
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.8.0'
+}
+
+rootProject.name = 'pillager_against_IAFdragon'

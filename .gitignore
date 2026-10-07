@@ -1,0 +1,24 @@
+# Gradle
+.gradle/
+build/
+
+# MDG 生成的运行目录
+run/
+runs/
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.settings/
+.classpath
+.project
+bin/
+out/
+
+# 杂项
+*.log
+.DS_Store
+Thumbs.db
