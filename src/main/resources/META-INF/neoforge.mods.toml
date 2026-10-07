@@ -4,17 +4,57 @@ license = "MIT"
 
 [[mods]]
 modId = "iaf_illager_hostility"
-version = "1.0.0"
-displayName = "IAF Illager Dragon Hostility"
-description = '''让灾厄村民（刌民：掠夺者 / 卫道士 / 唤魔者 / 幻术师）主动把冰与火的龙族当作攻击目标。
+version = "1.0.1"
+displayName = "Pillager Against IAF Dragon"
+description = '''让灾厄村民（刌民：掠夺者 / 卫道士 / 唤魔者 / 幻术师）与冰与火的龙族**双向敌对**。
+本模组自带全部实现，冰与火 jar 保持官方原样、一个字都不改：
 
-1.0.0 说明：本版本的「龙 → 灾厄村民」需要在冰与火 jar 的
-data/iceandfire/tags/entity_type/dragon_targets.json 里手动追加 "#minecraft:illager"。
-1.0.1 起改由本模组自带的数据包 tag 承担，冰与火 jar 保持官方原样。'''
+  · 龙 → 灾厄村民：本模组的数据包 tag
+      data/iceandfire/tags/entity_type/dragon_targets.json  （replace:false，与 IAF 自带的那份合并）
+  · 灾厄村民 → 龙：在 EntityJoinLevelEvent 里给灾厄村民注入攻击龙的目标 AI
+
+1.0.0：首次发布。
+1.0.1：① 不再锁定**已处于死亡状态**的龙 —— IAF 的龙死后 tickDeath() 会把 deathTime 钉在 0，
+          直到 getDeathStage() >= getAgeInDays()/5 才真正 remove，成年龙的尸体会长时间留在世界上，
+          这期间 isMobDead() 为 true；本版本与 IAF 自身的 shouldTarget 判断（!isMobDead()）对齐。
+        ② 把「龙 → 灾厄村民」从"改 IAF 的 tag"改为"本模组自带数据包 tag"，
+          IAF jar 因此回滚为官方原始件。'''
+
+# ---- 依赖：冰与火及其全部前置（与 iceandfire 自己的依赖逐条对齐）----
 
 [[dependencies.iaf_illager_hostility]]
 modId = "neoforge"
 type = "required"
 versionRange = "[21.1,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.iaf_illager_hostility]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21.1]"
+ordering = "NONE"
+side = "BOTH"
+
+# 本补丁的核心依赖：在冰与火之后加载
+[[dependencies.iaf_illager_hostility]]
+modId = "iceandfire"
+type = "required"
+versionRange = "[2.1,3.0)"
+ordering = "AFTER"
+side = "BOTH"
+
+# 冰与火自身的前置，一并声明（顺序与 iceandfire 的声明保持一致）
+[[dependencies.iaf_illager_hostility]]
+modId = "uranus"
+type = "required"
+versionRange = "[2.3.2,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.iaf_illager_hostility]]
+modId = "jupiter"
+type = "required"
+versionRange = "[2.3,)"
 ordering = "NONE"
 side = "BOTH"

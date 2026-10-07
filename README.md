@@ -18,8 +18,11 @@
 
 | 方向 | 实现方式 |
 | --- | --- |
-| **龙 → 灾厄村民** | 往 `#iceandfire:dragon_targets` 追加入 `#minecraft:illager` |
+| **龙 → 灾厄村民** | 本模组自带的**数据包 tag**（`replace: false`）往 `#iceandfire:dragon_targets` 追加 `#minecraft:illager` |
 | **灾厄村民 → 龙** | 在 `EntityJoinLevelEvent` 里给灾厄村民注入「攻击龙」的目标 AI |
+
+**冰与火的 jar 保持官方原样，一个字都不改** —— 两个方向都由本模组自己承担，
+所以冰与火升级时不会与本模组冲突，卸载也只需删掉这一个 jar。
 
 冰与火的龙判断"打不打某个非龙生物"完全由 tag 决定
 （`DragonUtils.isDragonTargetable(e, tag)` 的实现就是 `e.getType().is(tag)`），所以龙侧只需补 tag；
@@ -31,6 +34,10 @@
 
 - **优先级 3**：与原版"攻击村民 / 铁傀儡"同级，**低于**攻击玩家（刌民仍会先打玩家）。
 - **不需要视线**（`mustSee = false`）：龙常在空中或隔着地形，要求视线会让效果大打折扣。
+- **不会锁定已死亡的龙**（1.0.1 起）：IAF 的龙死后**不会立刻消失** ——
+  `tickDeath()` 把 `deathTime` 钉在 0，直到 `getDeathStage() >= getAgeInDays()/5` 才真正 `remove()`，
+  成年龙的尸体会在世界里停留很久；这期间用反射调 `isMobDead()` 过滤掉，
+  与 IAF 自身 `shouldTarget` 里 `!isMobDead()` 的判断保持一致。
 - **对冰与火无编译期依赖**：龙基类用 `Class.forName` 反射获取并缓存；反射拿不到时静默失效。
 - **不会重复叠加**：是否已注入写在实体的 `getPersistentData()` 里，区块反复加载也只加一次。
 - **全程 `try/catch (Throwable)`**：任何异常都不外抛，保证不影响其它模组。

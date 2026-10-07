@@ -6,6 +6,27 @@
 
 ---
 
+## [1.0.1] — 2026-10-07
+
+### 修复
+
+- **不再锁定已经处于死亡状态的龙**。IAF 的龙死后 `tickDeath()` 会把 `deathTime` 钉在 0，
+  直到 `getDeathStage() >= getAgeInDays()/5` 才真正 `remove()` ——
+  成年龙的尸体会在世界里停留很久，此前会被灾厄村民反复锁定。
+  现在通过反射调用 `isMobDead()` 过滤（并与 `isAlive()` 双重判断），
+  与 IAF 自身 `shouldTarget` 里 `!isMobDead()` 的逻辑保持一致。
+
+### 变更
+
+- **「龙 → 灾厄村民」改由本模组自带的数据包 tag 承担**：
+  新增 `data/iceandfire/tags/entity_type/dragon_targets.json`（`replace: false`，
+  与冰与火自带的那份合并）。**冰与火的 jar 因此不再需要任何改动**，回滚为官方原样。
+- 补全依赖声明：`iceandfire`（required，`ordering = AFTER`）、
+  `uranus`（`[2.3.2,)`）、`jupiter`（`[2.3,)`）、`minecraft`（`[1.21.1]`）（版本范围照抄冰与火自己的声明）。
+- 模组显示名改为 **Pillager Against IAF Dragon**。
+
+---
+
 ## [1.0.0] — 2026-10-06
 
 ### 新增
